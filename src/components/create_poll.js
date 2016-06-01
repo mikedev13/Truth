@@ -69,7 +69,7 @@ class CreatePoll extends Component {
   }
 
   render() {
-    const { fields: { question, answer1, answer2, answer3, answer4 }, handleSubmit } = this.props;
+    const { fields: { checked, question, answer1, answer2, answer3, answer4 }, handleSubmit } = this.props;
     const style = {
       height: '100%'
     };
@@ -103,6 +103,10 @@ class CreatePoll extends Component {
       margin: 'auto'
     }
 
+    const styleCheckbox={
+      margin: 'auto'
+    }
+
     return (
       <div>
       <Header value= {4}/>
@@ -121,6 +125,9 @@ class CreatePoll extends Component {
               </div>
             </div>
           }
+        </div>
+        <div className="centered-Create">
+        	<input type="checkbox"  />Make poll results public after submission?
         </div>
         <div className= 'centered-Create'>
           <FlatButton label= 'Cancel' secondary= {true} onClick={ this.removePicture }/>
@@ -265,6 +272,6 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'PollNewForm',
-  fields: ['picture', 'question', 'answer1', 'answer2', 'answer3', 'answer4'],
+  fields: ['picture', 'checked', 'question', 'answer1', 'answer2', 'answer3', 'answer4'],
   validate
 }, mapStateToProps, { createPoll })(CreatePoll);
