@@ -11,14 +11,19 @@ import TextField from 'material-ui/TextField';
 class CreatePoll extends Component {
   constructor(props) {
     super(props);
-    this.state = { file: [], dataURL: '' };
+    this.state = { file: [], dataURL: '', checked: false};
 
     this.onDrop = this.onDrop.bind(this);
     this.removePicture = this.removePicture.bind(this);
+    this.checkBox = this.checkBox.bind(this);
   }
 
   removePicture() {
     this.setState({ file: [], dataURL: '' });
+  }
+
+  checkBox(){
+    this.setState({ checked: !this.state.checked });
   }
 
   onDrop(file) {
@@ -62,8 +67,8 @@ class CreatePoll extends Component {
     }
   }
 
-  handleFormSubmit({ question, answer1, answer2, answer3, answer4 }) {
-    this.props.createPoll({ question, answer1, answer2, answer3, answer4, username: this.props.username, createdAt: new Date(), dataURL: this.state.dataURL });
+  handleFormSubmit({ checked, question, answer1, answer2, answer3, answer4 }) {
+    this.props.createPoll({ checked, question, answer1, answer2, answer3, answer4, username: this.props.username, createdAt: new Date(), dataURL: this.state.dataURL });
     this.removePicture();
     this.props.resetForm();
   }
@@ -127,7 +132,7 @@ class CreatePoll extends Component {
           }
         </div>
         <div className="centered-Create">
-        	<input type="checkbox"  />Make poll results public after submission?
+        	<input type="checkbox"  onClick={ this.checkBox }/> Make poll results public after submission
         </div>
         <div className= 'centered-Create'>
           <FlatButton label= 'Cancel' secondary= {true} onClick={ this.removePicture }/>
