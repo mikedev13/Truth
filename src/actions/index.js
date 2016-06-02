@@ -27,9 +27,9 @@ export function loginUser({ username, password }) {
   }
 }
 
-export function signupUser({ username, password }) {
+export function signupUser({ username, password, country }) {
   return function(dispatch) {
-    axios.post('/signup', { username, password })
+    axios.post('/signup', { username, password, country })
       .then( response => {
         dispatch({ type: AUTH_USER, payload: response.data.user });
         localStorage.setItem('token', response.data.token);

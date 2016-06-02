@@ -118,8 +118,15 @@ exports.signup = function(req, res, next) {
       Poll.find({}, function(err, polls) {
         const arrayOfObjectIDs = [];
         const objectOfPendingIDs = polls.reduce(function(accu, curr) {
-          accu[curr.id] = curr.id;
-          arrayOfObjectIDs.push( mongoose.Types.ObjectId(curr.id) );
+          if (curr.country) {
+            if (curr.country.toLowerCase() === user.country.toLowerCase()) {
+              accu[curr.id] = curr.id;
+              arrayOfObjectIDs.push( mongoose.Types.ObjectId(curr.id) );
+            }
+          } else {
+            accu[curr.id] = curr.id;
+            arrayOfObjectIDs.push( mongoose.Types.ObjectId(curr.id) );
+          }
           return accu;
         }, {});
         User.findOneAndUpdate({ username: username.toLowerCase() }, { pending: objectOfPendingIDs, created: {}, friends: {} }, { new: true }, function(err, user) {
