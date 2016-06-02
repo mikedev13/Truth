@@ -11,7 +11,7 @@ import TextField from 'material-ui/TextField';
 class CreatePoll extends Component {
   constructor(props) {
     super(props);
-    this.state = { file: [], dataURL: '', checked: false};
+    this.state = { file: [], dataURL: '', reveal: false };
 
     this.onDrop = this.onDrop.bind(this);
     this.removePicture = this.removePicture.bind(this);
@@ -23,7 +23,7 @@ class CreatePoll extends Component {
   }
 
   checkBox(){
-    this.setState({ checked: !this.state.checked });
+    this.setState({ reveal: !this.state.reveal });
   }
 
   onDrop(file) {
@@ -67,14 +67,15 @@ class CreatePoll extends Component {
     }
   }
 
-  handleFormSubmit({ checked, question, answer1, answer2, answer3, answer4 }) {
-    this.props.createPoll({ checked, question, answer1, answer2, answer3, answer4, username: this.props.username, createdAt: new Date(), dataURL: this.state.dataURL });
+  handleFormSubmit({ question, answer1, answer2, answer3, answer4 }) {
+    console.log(this.state.reveal);
+    this.props.createPoll({ reveal: this.state.reveal, question, answer1, answer2, answer3, answer4, username: this.props.username, createdAt: new Date(), dataURL: this.state.dataURL });
     this.removePicture();
     this.props.resetForm();
   }
 
   render() {
-    const { fields: { checked, question, answer1, answer2, answer3, answer4 }, handleSubmit } = this.props;
+    const { fields: { question, answer1, answer2, answer3, answer4 }, handleSubmit } = this.props;
     const style = {
       height: '100%'
     };
@@ -277,6 +278,6 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'PollNewForm',
-  fields: ['picture', 'checked', 'question', 'answer1', 'answer2', 'answer3', 'answer4'],
+  fields: ['picture', 'question', 'answer1', 'answer2', 'answer3', 'answer4'],
   validate
 }, mapStateToProps, { createPoll })(CreatePoll);

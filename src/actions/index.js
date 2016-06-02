@@ -92,6 +92,7 @@ export function deleteResultsPoll(pollId) {
 }
 
 export function createPoll(props) {
+  console.log('props inside of action', props);
   return function(dispatch) {
     axios.post('/createpoll', props, {
       headers: { authorization: localStorage.getItem('token') }

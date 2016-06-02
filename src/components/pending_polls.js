@@ -16,9 +16,12 @@ class PendingPolls extends Component {
 
   renderPendingPolls(pollsData, key) {
     var photo = pollsData.photo;
+    var reveal = pollsData.reveal;
     var question = pollsData.question;
     var answers = pollsData.answers;
     var pollId= key;
+
+    console.log(pollsData);
 
     var answerArray = Object.keys(answers);
 

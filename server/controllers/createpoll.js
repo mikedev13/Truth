@@ -51,6 +51,7 @@ exports.removeResults = function(req, res, next) {
 
 exports.createPoll = function(req, res, next) {
   var answers = {};
+
   if (req.body.answer1) {
     answers[req.body.answer1] = 0;
   }
@@ -74,6 +75,7 @@ exports.createPoll = function(req, res, next) {
 
   const poll = new Poll ({
     photo: req.body.dataURL,
+    reveal: req.body.reveal,
     createdBy: req.body.username,
     createdAt: req.body.createdAt,
     question: req.body.question,
