@@ -25,7 +25,7 @@ class Signup extends Component {
   }
 
   render() {
-    const { handleSubmit, fields: { username, password, passwordConfirm }} = this.props;
+    const { handleSubmit, fields: { username, password, passwordConfirm, country }} = this.props;
     const style = {
       height: 750,
       //backgroundColor: teal50
@@ -48,6 +48,10 @@ class Signup extends Component {
           <fieldset className= 'form-group'>
             <TextField halfWidth type='password' hintText= 'Confirm Password' { ...passwordConfirm }/>
             {passwordConfirm.touched && passwordConfirm.error && <div className= 'error'>{passwordConfirm.error}</div>}
+          </fieldset>
+          <fieldset className= 'form-group' >
+            <TextField halfWidth hintText= 'Country' { ...country }/>
+            {country.touched && country.error && <div className= 'error'>{country.error}</div>}
           </fieldset>
           {this.renderAlert()}
           <RaisedButton type='submit' label= 'Sign Up' primary= {true}/>      
@@ -77,6 +81,10 @@ function validate(formProps) {
     errors.passwordConfirm = 'Please enter a password confirmation';
   }
 
+  if(!formProps.country) {
+    errors.country = 'Please enter a country';
+  }
+
   if(formProps.password !== formProps.passwordConfirm) {
     errors.passwordConfirm = 'Passwords must match';
   }
@@ -98,6 +106,6 @@ function mapStateToProps(state){
 
 export default reduxForm({
   form: 'signup',
-  fields: ['username', 'password', 'passwordConfirm'],
+  fields: ['username', 'password', 'passwordConfirm', 'country'],
   validate
 }, mapStateToProps, actions)(Signup);

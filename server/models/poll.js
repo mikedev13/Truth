@@ -9,7 +9,8 @@ const pollSchema = new Schema({
   createdBy: String,
   createdAt: Date,
   question: String,
-  answers: {}
+  answers: {},
+  country: String,
 
 });
 

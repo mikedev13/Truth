@@ -67,15 +67,14 @@ class CreatePoll extends Component {
     }
   }
 
-  handleFormSubmit({ question, answer1, answer2, answer3, answer4 }) {
-    console.log(this.state.reveal);
-    this.props.createPoll({ reveal: this.state.reveal, question, answer1, answer2, answer3, answer4, username: this.props.username, createdAt: new Date(), dataURL: this.state.dataURL });
+  handleFormSubmit({ question, answer1, answer2, answer3, answer4, country }) {
+    this.props.createPoll({ reveal: this.state.reveal, question, answer1, answer2, answer3, answer4, country, username: this.props.username, createdAt: new Date(), dataURL: this.state.dataURL });
     this.removePicture();
     this.props.resetForm();
   }
 
   render() {
-    const { fields: { question, answer1, answer2, answer3, answer4 }, handleSubmit } = this.props;
+    const { fields: { question, answer1, answer2, answer3, answer4, country }, handleSubmit } = this.props;
     const style = {
       height: '100%'
     };
@@ -165,6 +164,12 @@ class CreatePoll extends Component {
           <TextField style ={{width: '80%'}} hintText= 'Answer 4' { ...answer4 }/>
           {answer4.touched && answer4.error && <div className= 'error'>{answer4.error}</div>}
           </div>
+
+          <div className="form-group">
+          <TextField style ={{width: '80%'}} hintText= 'Make this poll available to' { ...country }/>
+          {country.touched && country.error && <div className= 'error'>{country.error}</div>}
+          </div>
+
           <RaisedButton style= {styleButton} type='submit' label= 'Submit' primary= {true}/>
         </form>
       </div>
@@ -265,6 +270,15 @@ function validate(values) {
     }
   }
 
+  if (values.country) {
+    if (values.country.length > 20) {
+      errors.country = 'Please enter a shorter country name';
+    }
+    if (values.country.indexOf('.') !== -1) {
+      errors.country= 'Counrty name must not contain periods';
+    }
+  }
+
   return errors;
 }
 
@@ -278,6 +292,6 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'PollNewForm',
-  fields: ['picture', 'question', 'answer1', 'answer2', 'answer3', 'answer4'],
+  fields: ['picture', 'question', 'answer1', 'answer2', 'answer3', 'answer4', 'country'],
   validate
 }, mapStateToProps, { createPoll })(CreatePoll);

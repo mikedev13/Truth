@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { deleteResultsPoll } from '../actions/index';
-import { PieChart } from 'react-d3-basic';
 import _ from 'lodash';
 import Header from './header.js';
 import Paper from 'material-ui/Paper';

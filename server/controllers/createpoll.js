@@ -51,6 +51,7 @@ exports.removeResults = function(req, res, next) {
 
 exports.createPoll = function(req, res, next) {
   var answers = {};
+  var country = {};
 
   if (req.body.answer1) {
     answers[req.body.answer1] = 0;
@@ -79,7 +80,8 @@ exports.createPoll = function(req, res, next) {
     createdBy: req.body.username,
     createdAt: req.body.createdAt,
     question: req.body.question,
-    answers
+    answers,
+    country: req.body.country,
   });
 
   poll.save(function(err){
@@ -98,10 +100,19 @@ exports.createPoll = function(req, res, next) {
             if (err) { return next(err); }
           });
         } else {
-          user.pending[poll.id] = poll.id;
-          User.findOneAndUpdate({ username: user.username }, { pending: user.pending }, { new: true }, function(err, user) {
-            if (err) { return next(err); }
-          });
+          if (req.body.country) {
+            if (req.body.country === user.country) {
+              user.pending[poll.id] = poll.id;
+              User.findOneAndUpdate({ username: user.username }, { pending: user.pending }, { new: true }, function(err, user) {
+                if (err) { return next(err); }
+              });
+            }
+          } else {
+            user.pending[poll.id] = poll.id;
+            User.findOneAndUpdate({ username: user.username }, { pending: user.pending }, { new: true }, function(err, user) {
+              if (err) { return next(err); }
+            });
+          }
         }
       });
     });
