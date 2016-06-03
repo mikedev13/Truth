@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const Poll = require('../models/poll');
+const sendgrid = require('sendgrid')('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');
 
 exports.answerPending = function(req, res, next) {
   // we need to go to user who answered in collection
@@ -52,6 +53,8 @@ exports.removeResults = function(req, res, next) {
 exports.createPoll = function(req, res, next) {
   var answers = {};
   var country = {};
+  var emails = {};
+  var message = {};
 
   if (req.body.answer1) {
     answers[req.body.answer1] = 0;
@@ -70,6 +73,29 @@ exports.createPoll = function(req, res, next) {
     res.status(422).send({ error: "You must provide a question and answers" });
   }
 
+
+  //formats input emails into an array
+  var emailList = (req.body.emails)
+    .replace(/[^,;]*.?</g, "")
+    .replace(/>/g, "")
+    .replace(/[,; ]{1,}/g, "\n")
+    .replace(/[\n]{2,}/g, "\n")
+    .split("\n");
+
+    console.log("The email list: ", emailList, req.body.message);
+
+    var payload = {
+      to: emailList,
+      from: 'noreply@sealzy.com',
+      subject: "Your friend has invited you to take a poll at sealzy.com",
+      text: req.body.message + '\n' + "Your poll is waiting at www.sealzy.com."
+    }
+
+    sendgrid.send(payload, function(err, json) {
+      if (err) { console.error(err); }
+      console.log(json);
+    });
+
   // TO DO: check if createdBy username's lastCreatedPollAt is within 5 minutes of createdAt
   // if so, send an error saying need to wait 5 minutes
   // if not, update user's lastCreatedPollAt with createdAt
@@ -82,6 +108,7 @@ exports.createPoll = function(req, res, next) {
     question: req.body.question,
     answers,
     country: req.body.country,
+    emails: req.body.emails
   });
 
   poll.save(function(err){
