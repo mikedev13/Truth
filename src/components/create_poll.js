@@ -166,10 +166,10 @@ class CreatePoll extends Component {
           </div>
 
           <div className="form-group">
-          <TextField style ={{width: '80%'}} hintText= 'Make this poll available to' { ...country }/>
+          <TextField style ={{width: '80%'}} hintText= 'Make this poll available in' { ...country }/>
           {country.touched && country.error && <div className= 'error'>{country.error}</div>}
           </div>
-
+          
           <RaisedButton style= {styleButton} type='submit' label= 'Submit' primary= {true}/>
         </form>
       </div>
