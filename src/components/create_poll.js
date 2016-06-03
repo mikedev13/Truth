@@ -67,14 +67,14 @@ class CreatePoll extends Component {
     }
   }
 
-  handleFormSubmit({ question, answer1, answer2, answer3, answer4, country }) {
-    this.props.createPoll({ reveal: this.state.reveal, question, answer1, answer2, answer3, answer4, country, username: this.props.username, createdAt: new Date(), dataURL: this.state.dataURL });
+  handleFormSubmit({ question, answer1, answer2, answer3, answer4, country, emails, message }) {
+    this.props.createPoll({ reveal: this.state.reveal, question, answer1, answer2, answer3, answer4, country, emails, message, username: this.props.username, createdAt: new Date(), dataURL: this.state.dataURL });
     this.removePicture();
     this.props.resetForm();
   }
 
   render() {
-    const { fields: { question, answer1, answer2, answer3, answer4, country }, handleSubmit } = this.props;
+    const { fields: { question, answer1, answer2, answer3, answer4, country, emails, message }, handleSubmit } = this.props;
     const style = {
       height: '100%'
     };
@@ -168,6 +168,16 @@ class CreatePoll extends Component {
           <div className="form-group">
           <TextField style ={{width: '80%'}} hintText= 'Make this poll available to' { ...country }/>
           {country.touched && country.error && <div className= 'error'>{country.error}</div>}
+          </div>
+
+          <div className="form-group">
+          <TextField style ={{width: '80%'}} hintText= 'Invite participants. Add their email addresses here.  ' { ...emails }/>
+          {emails.touched && emails.error && <div className= 'error'>{emails.error}</div>}
+          </div>
+
+          <div className="form-group">
+          <TextField style ={{width: '80%'}} hintText= 'Write a short message to your invited participants.  ' { ...message }/>
+          {message.touched && message.error && <div className= 'error'>{message.error}</div>}
           </div>
 
           <RaisedButton style= {styleButton} type='submit' label= 'Submit' primary= {true}/>
@@ -275,7 +285,7 @@ function validate(values) {
       errors.country = 'Please enter a shorter country name';
     }
     if (values.country.indexOf('.') !== -1) {
-      errors.country= 'Counrty name must not contain periods';
+      errors.country= 'Country name must not contain periods';
     }
   }
 
@@ -292,6 +302,6 @@ function mapStateToProps(state) {
 
 export default reduxForm({
   form: 'PollNewForm',
-  fields: ['picture', 'question', 'answer1', 'answer2', 'answer3', 'answer4', 'country'],
+  fields: ['picture', 'question', 'answer1', 'answer2', 'answer3', 'answer4', 'country', 'emails', 'message' ],
   validate
 }, mapStateToProps, { createPoll })(CreatePoll);
