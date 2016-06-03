@@ -152,6 +152,15 @@ class CreatePoll extends Component {
           <TextField style ={{width: '80%'}} hintText= 'Answer 4' { ...answer4 }/>
           {answer4.touched && answer4.error && <div className= 'error'>{answer4.error}</div>}
           </div>
+<<<<<<< Updated upstream
+=======
+
+          <div className="form-group">
+          <TextField style ={{width: '80%'}} hintText= 'Make this poll available in' { ...country }/>
+          {country.touched && country.error && <div className= 'error'>{country.error}</div>}
+          </div>
+
+>>>>>>> Stashed changes
           <RaisedButton style= {styleButton} type='submit' label= 'Submit' primary= {true}/>
         </form>
       </div>

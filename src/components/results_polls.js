@@ -15,9 +15,11 @@ class ResultsPolls extends Component {
   }
 
   renderPieChart(pollsData, property) {
+    console.log(pollsData);
     var photo = pollsData.photo;
     var question = pollsData.question;
     var pollId = property;
+    var user = pollsData.createdBy;
     var data = [];
     var totalVotes = 0;
     for (var key in pollsData.answers) {
@@ -73,6 +75,7 @@ class ResultsPolls extends Component {
     return (
         <div key={pollId} className="col-md-12">
           <div className="donut-chart-block block">
+            <p>Created by: {user}</p>
             <p className="titlechart">Question: {question}</p>
             <div className="col-md-12">
               <div className="col-sm-12 col-md-4">
@@ -122,7 +125,7 @@ class ResultsPolls extends Component {
       <div>
         <Header value= {3}/>
         <Paper zDepth={2} style={{height: 'auto'}}>
-          { _.isEmpty(this.props.resultsPolls) ?
+          { _.isEmpty(this.props.ownedPolls) ?
               <div className="jumbotron text-center white-text">
                 <h1>Oops!</h1>
                 <p>There are currently no results polls. Please create a poll!</p>
@@ -130,7 +133,9 @@ class ResultsPolls extends Component {
             :
             <div className="container-fluid">
               <div className="row">
-                {_.map(this.props.resultsPolls, this.renderPieChart)}
+                {_.map(this.props.ownedPolls, this.renderPieChart)}
+                {_.map(_.filter(this.props.otherPolls, (pollsData, property) => {
+                  return pollsData.reveal} ), (poll) => {console.log('poll', poll); return this.renderPieChart(poll, poll._id)})}
               </div>
             </div>
           }
@@ -141,7 +146,9 @@ class ResultsPolls extends Component {
 }
 
 function mapStateToProps(state) {
-  return { resultsPolls: state.user.created };
+  return { ownedPolls: state.user.created,
+           otherPolls: state.user.pending, 
+         };
 }
 
 //
