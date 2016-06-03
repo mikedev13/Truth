@@ -11,6 +11,8 @@ const pollSchema = new Schema({
   question: String,
   answers: {},
   country: String,
+  emails: String,
+  message: String
 
 });
 

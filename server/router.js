@@ -49,6 +49,7 @@ module.exports = function(app, io) {
 
   app.post('/createpoll', CreatePoll.createPoll, function(req, res, next) {
     console.log('inside router.js', req.body.poll);
+    console.log('inside router.js, email?', req.body.poll.emails);
     io.sockets.emit('createpoll', { poll: req.body.poll });
     res.json({ poll: req.body.poll })
   });
